@@ -26,16 +26,16 @@ Product.init(
     },
     stock: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'traveller',
-        key: 'id',
-        unique: false
-      }
+      allowNull: false,
+      defaultValue: 10,
+      validate: {
+        isNumeric: true,
+      },
     },
     Category_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'location',
+        model: 'category',
         key: 'id',
         unique: false
       }
