@@ -7,7 +7,9 @@ router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
-    const catData = await Category.findAll();
+    const catData = await Category.findAll({
+      include: [{ model: Product}]
+    });
     res.status(200).json(catData);
   } catch (error) {
     res.status(500).json(error);
@@ -18,7 +20,9 @@ router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try {
-    const catData = await Category.findByPk(req.params.id);
+    const catData = await Category.findByPk(req.params.id, {
+      include: [{ model: Product }]
+    })
     res.status(200).json(catData)
   } catch (error) {
     res.status(500).json(error);
@@ -44,13 +48,13 @@ router.post('/', (req, res) => {
           id: req.params.id,
         },
       });
-      if (!categoryData[0]) {
+      if (!catData) {
         res.status(404).json({ message: 'Category not found' });
         return;
       }
       res.status(200).json(catData);
-    } catch (err) {
-      res.status(500).json(err);
+    } catch (error) {
+      res.status(500).json(error);
     }
   });
 
@@ -63,13 +67,13 @@ router.delete('/:id', async (req, res) => {
       id: req.params.id
      }, 
     });
-    if (!catData[0]) {
+    if (!catData) {
       res.status(200).json({ message: 'Category has been removed' });
       return;
     }
-    res.status(200).json(categoryData);
-  } catch (err) {
-    res.status(500).json(err);
+    res.status(200).json(catData);
+  } catch (error) {
+    res.status(500).json(error);
    }
 });
 
